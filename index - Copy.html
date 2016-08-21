@@ -1,0 +1,123 @@
+<!doctype>
+<html>
+	<style>
+		#taskForm{
+			background-color: #e3e3e3;
+			width: 400px;
+			margin: 40px;
+		}
+		#taskForm td{
+			padding: 10px 10px;
+		}
+		#taskForm span{
+			display: block;
+		}
+		input{
+			border-radius: 3px;
+			border: 1px solid #888888;
+		}
+		table#mainContent{
+			 border-collapse: collapse;
+		}
+		table#mainContent, #mainContent td, #mainContent th{
+		    border: 1px solid black;
+		}
+		#mainContent td, #mainContent th{
+			text-align: center;
+			padding: 10px;
+		}
+		.errorMsg{
+			color: red;
+			font-size: 10px;
+		}
+	</style>
+
+	<script src="https://code.jquery.com/jquery-3.1.0.min.js"></script>
+
+	<script>
+		$(document).ready(function(){
+			var people = {
+				"persons" : [
+					{"name":"Test Task", "date":"", "assigned":"PersonA"},
+					{"name":"Test Task", "date":"", "assigned":"PersonB"},
+					{"name":"Test Task", "date":"", "assigned":"PersonC"}
+				]
+			};			
+			data();
+			function data(){
+				var inHTML = "";					
+				$.each(people.persons, function(index, value){
+					var counter = index + 1;
+					value.date = Date();
+				    var newItem = "<tr><td>" + value.name + "#" + counter + "</td><td>"  + value.date +  "</td><td>" + value.assigned + "</td></tr>"
+				    inHTML += newItem;
+				});			
+				
+				$("#dynamicTable").html(inHTML);
+			};
+
+			function createJSON() { 
+			    jsonObj = people.persons;			   
+			        var name = $('#dynamicName').val();
+			        var assigned = $('#dynamicassigned').val();
+
+			        item = {}
+			        item ["name"] = name;
+			        item ["assigned"] = assigned;
+
+			        jsonObj.push(item);			    
+			};
+
+			$('#addTask').click(function(){	
+				var isValid;
+				$("input").each(function() {
+				   var element = $(this).val();
+				   if (element == "") {
+				       isValid = false;
+				       var errorP = $(this).next("span.errorMsg");
+				       errorP.html("*Required");
+				   }
+				});
+				if(isValid != false){
+					createJSON();
+					data();				
+					$('input').val("");					
+					$(".errorMsg").html("");
+					$('#mainContent tr:last-child td').css('color', 'green'); 
+				}else{
+					
+				}
+			});
+		});
+	</script>
+
+	<body>
+		<table id="taskForm">
+			<tr>
+				<td>Task Name: </td><td><input id="dynamicName" type="text"><span class="errorMsg"></span></td>
+			</tr>
+			<tr>	
+				<td>Assigned: </td><td><input id="dynamicassigned" type="text"><span class="errorMsg"></span></td>
+			</tr>
+			<tr>		
+				<td><button id="addTask">AddTask</button></td>
+			</tr>
+		</table>			
+			
+		<table id="mainContent"> 
+			<thead>
+				<tr>
+					<th>Task Name</th>
+					<th>Date</th>
+					<th>Assigned To</th>
+				</tr>
+			</thead>
+			<tbody id="dynamicTable">
+				
+			</tbody>   
+		</table>
+			
+			
+	</body>
+
+</html>

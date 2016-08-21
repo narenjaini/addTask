@@ -1,0 +1,59 @@
+<!doctype>
+<html>
+	<script src="https://code.jquery.com/jquery-3.1.0.min.js"
+			  integrity="sha256-cCueBR6CsyA4/9szpPfrX3s49M9vUU5BgtiJj06wt/s="
+			  crossorigin="anonymous"></script>
+	<script>
+		$(document).ready(function(){
+			var people = {
+				"persons" : [
+					{"name":"ABC", "address":"XYZ"},
+					{"name":"PQR", "address":"STO"},
+					{"name":"LMN", "address":"POP"}
+				]
+			};			
+			data();
+			function data(){
+				var inHTML = "",
+					counter = index + 1;
+				$.each(people.persons, function(index, value){
+				    var newItem = "<tr><td>"+ value.name + "</td></tr>"
+				    inHTML += newItem; 
+				});
+				$("table#dynamicTable").html(inHTML);
+			};
+
+			function createJSON() { 
+			    jsonObj = people.persons;			   
+			        var name = $('#dynamicName').val();
+			        var address = $('#dynamicaddress').val();
+
+			        item = {}
+			        item ["name"] = name;
+			        item ["address"] = address;
+
+			        jsonObj.push(item);			    
+			};
+
+			$('#addTask').click(function(){				
+				createJSON();
+				data();
+			});
+
+			
+
+
+		});
+	</script>
+	<body>
+		name: <input id="dynamicName" type="text" >
+		address: <input id="dynamicaddress" type="text" class="email">		
+		<button id="addTask" >addTask</button>
+		<table id="dynamicTable">    
+		</table>
+
+
+		
+	</body>
+
+</html>
